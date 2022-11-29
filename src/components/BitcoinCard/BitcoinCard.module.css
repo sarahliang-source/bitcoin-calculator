@@ -1,0 +1,56 @@
+.bitcoinCard {
+  border: 1px solid black;
+  display: inline-block;
+  margin: 20px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 350px;
+  height: 500px;
+  border: 3px solid #34574f;
+  border-radius: 10px;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.currency {
+  margin-top: 75px;
+}
+
+.currentPrice {
+  margin-top: 75px;
+}
+
+.userAmount {
+  height: 40px;
+  font-size: 28px;
+  width: 80%;
+  border: 1px solid #34574f;
+  border-radius: 5px;
+  margin-top: 75px;
+  margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 900px) {
+  .bitcoinCard {
+    width: 300px;
+    height: 200px;
+    font-size: 36px;
+  }
+
+  .currency {
+    margin-top: 7px;
+  }
+  
+  .currentPrice {
+    margin-top: 7px;
+  }
+  
+  .userAmount {
+    height: 20px;
+    font-size: 18px;
+    margin-top: 7px;
+    margin-bottom: 4px;
+  }
+} 
