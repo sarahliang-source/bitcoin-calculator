@@ -13,3 +13,15 @@
   font-weight: bold;
   color: white;
 }
+
+.Card-container {
+  display: flex;
+  flex-direction: row
+}
+
+@media only screen and (max-width: 900px) {
+  .Card-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
