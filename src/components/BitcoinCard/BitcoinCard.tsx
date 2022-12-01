@@ -1,83 +1,49 @@
 import { useState, useEffect } from "react";
+import LineGraphModal from "../LineGraphModal/LineGraphModal";
+import { toFixed2, getCurrencyPrice } from "../../utils/index";
 import clsx from "clsx";
 import styles from "./BitcoinCard.module.css";
-import LineGraphModal from "../LineGraphModal/LineGraphModal";
 
-// get current price of bitcoin from coindesk api
-function getPrice(currency: string) {
-  return fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
-    .then((result) => result.json())
-    .then((result) => {
-      let newPrice = parseFloat(
-        result.bpi[currency].rate.replace(/,/g, "")
-      ).toFixed(2);
-      console.log("new price: ", newPrice);
-      return Number(newPrice);
-    });
-}
-
-function toFixed2(n: number) {
-  return (`${n}`.match(new RegExp(`^-?\\d+(?:\.\\d{0,2})?`)) as string[])[0];
-}
-
-type Props = {
+type BitcoinCardProps = {
   currency: string;
+  data: any;
+  usdPrice: number;
 };
-function BitcoinCard({ currency }: Props) {
+function BitcoinCard({ currency, data, usdPrice }: BitcoinCardProps) {
   const [prices, setPrices] = useState<number[]>([]);
-  const [usdPrice, setUsdPrice] = useState<number>();
-  const [userAmount, setUserAmount] = useState<number>();
-  const [bitcoinAmount, setBitcoinAmount] = useState<number>();
+  const [userAmount, setUserAmount] = useState<number>(0);
+  const [bitcoinAmount, setBitcoinAmount] = useState<number>(0);
   const [animate, setAnimate] = useState(false);
   const [displayChart, setDisplayChart] = useState(false);
 
   useEffect(() => {
-    if (userAmount && usdPrice) {
-      console.log("use effect 1");
-      const amt = toFixed2(userAmount / usdPrice);
-      setBitcoinAmount(Number(amt));
-    }
-  }, [userAmount, usdPrice]);
+    const initialValue: number[] = new Array(10).fill(0);
+    setPrices(initialValue);
+  }, []);
 
   useEffect(() => {
-    // initialize prices
-    const initialValue: number[] = new Array(10).fill(0);
-    getPrice(currency).then((price) => {
-      initialValue[0] = price;
-      setPrices(initialValue);
-      console.log("inital prices: ", initialValue);
-    });
-    getPrice("USD").then((price) => {
-      setUsdPrice(price);
-    });
-
-    // update prices every 30 seconds
-    function updatePrices() {
-      getPrice(currency).then((price) => {
-        setPrices((prices) => {
-          if (price !== prices[0]) {
-            setAnimate(true);
-            setTimeout(() => {
-              setAnimate(false);
-            }, 3000);
-          }
-          prices.pop();
-          prices.unshift(price);
-          console.log("prices: ", prices);
-          return [...prices];
-        });
-      });
-      getPrice("USD").then((price) => {
-        setUsdPrice(price);
+    if (data) {
+      const currencyPrice = getCurrencyPrice(data, currency);
+      setPrices((prices) => {
+        if (currencyPrice !== prices[0] && prices[0] !== 0) {
+          setAnimate(true);
+          setTimeout(() => {
+            setAnimate(false);
+          }, 3000);
+        }
+        prices.pop();
+        prices.unshift(currencyPrice);
+        return [...prices];
       });
     }
-    const interval = setInterval(() => {
-      updatePrices();
-    }, 5000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  }, [data]);
+
+  useEffect(() => {
+    if (userAmount && usdPrice) {
+      const amt = toFixed2(userAmount / usdPrice);
+      setBitcoinAmount(parseFloat(amt));
+    }
+  }, [userAmount, usdPrice]);
 
   return (
     <>
@@ -98,14 +64,14 @@ function BitcoinCard({ currency }: Props) {
       >
         <div className={styles.currency}>{currency}</div>
         <div className={clsx(styles.currentPrice, animate && styles.blink)}>
-          {prices[0].toFixed(2)}
+          {prices[0]?.toFixed(2)}
         </div>
         <input
           className={styles.userAmount}
           type="number"
           value={Number(userAmount).toString()}
           onChange={(e) => {
-            setUserAmount(Number(e.target.value));
+            setUserAmount(parseFloat(e.target.value));
           }}
           onClick={(e) => {
             e.stopPropagation();
