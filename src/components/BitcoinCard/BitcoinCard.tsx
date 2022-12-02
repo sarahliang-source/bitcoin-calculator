@@ -50,7 +50,7 @@ function BitcoinCard({ currency, data, usdPrice }: BitcoinCardProps) {
       {displayChart && (
         <LineGraphModal
           currency={currency}
-          prices={prices}
+          prices={prices.slice().reverse()}
           closeModal={() => {
             setDisplayChart(false);
           }}
