@@ -24,8 +24,8 @@ function LineGraphModal({ currency, prices, closeModal }: Props) {
           label: currency.concat(" Bitcoin Prices"),
           data: prices,
           fill: true,
-          backgroundColor: "rgba(75,192,192,0.2)",
-          borderColor: "rgba(75,192,192,1)",
+          backgroundColor: "rgba(26,173,120,0.2)",
+          borderColor: "rgba(26,173,120,1)",
         },
       ],
     });

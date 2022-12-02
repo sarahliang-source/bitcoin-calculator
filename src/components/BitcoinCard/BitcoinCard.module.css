@@ -10,7 +10,7 @@
   align-content: center;
   width: 350px;
   height: 500px;
-  border: 3px solid #34574f;
+  border: 3px solid rgb(161, 161, 161);
   border-radius: 10px;
   font-size: 40px;
   font-weight: bold;
@@ -25,14 +25,14 @@
 }
 
 .bitcoinAmount {
-  color: #1aad78;
+  color: #34574f;
 }
 
 .userAmount {
   height: 40px;
   font-size: 28px;
   width: 80%;
-  border: 1px solid #34574f;
+  border: 1px solid gray;
   border-radius: 5px;
 }
 
@@ -51,6 +51,7 @@
 
 .blink {
   animation: blinker 0.5s linear 3;
+  color: #1aad78;
 }
 
 @keyframes blinker {
