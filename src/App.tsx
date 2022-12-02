@@ -5,7 +5,7 @@ import getBitcoinPrices from "./services/getBicoinPrices";
 import { getCurrencyPrice } from "./utils";
 
 function App() {
-  const [data, setData] = useState<number[]>();
+  const [data, setData] = useState<any>();
   const [usdPrice, setUsdPrice] = useState<number>(0);
 
   const UPDATE_INTERVAL = 30000;

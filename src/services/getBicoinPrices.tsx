@@ -2,7 +2,10 @@
 export default function getBitcoinPrices() {
   return fetch("https://api.coindesk.com/v1/bpi/currentprice.json").then(
     (result) => {
-      return result.json();
+      if (result.ok) {
+        return result.json();
+      }
+      throw new Error("Server responds with error!");
     }
   );
 }

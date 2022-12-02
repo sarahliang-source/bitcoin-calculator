@@ -40,6 +40,8 @@ function BitcoinCard({ currency, data, usdPrice }: BitcoinCardProps) {
 
   useEffect(() => {
     if (userAmount && usdPrice) {
+      // long way: userAmount * (currencyBitcoinPrice / usdBitcoinPrice) * (1 / currencyBitcoinPrice)
+      // = userAmount * (1 / usdBitcoinPrice)
       const amt = toFixed2(userAmount / usdPrice);
       setBitcoinAmount(parseFloat(amt));
     }
